@@ -11,7 +11,9 @@
   const KINDS = ['exchange', 'give', 'want'];
   const SESSIONS = ['Day1', 'Day2'];
   const ZONES = ['SS', 'S', 'A', 'B'];
+  const WANT_ZONES = ZONES.concat('any');
   const PLATFORMS = ['zaiko', 'lawson'];
+  const WANT_PLATFORMS = PLATFORMS.concat('any');
 
   const I18N = {
     'zh-Hant': {
@@ -23,10 +25,11 @@
       'form.title': '我要投稿', 'form.edit': '修改我的投稿',
       'form.needLogin': '投稿需要先用 Google 登入。', 'form.loginHint': '請點右上角的「Google 登入」。',
       'form.warn': '請勿張貼身分證、完整票號、QR Code 等個人或票券敏感資料。聯絡方式只有登入的人看得到。',
-      'f.kind': '類型', 'f.nick': '暱稱（最多 24 字）', 'f.session': '場次', 'f.seat': '座位區域', 'f.pick': '請選擇', 'f.platform': '購票平台', 'plat.zaiko': 'ZAIKO', 'plat.lawson': 'Lawson',
+      'f.kind': '類型', 'f.nick': '暱稱（最多 24 字）', 'f.session': '場次', 'f.seat': '座位區域', 'f.pick': '請選擇', 'f.platform': '購票平台', 'plat.zaiko': 'ZAIKO', 'plat.lawson': 'Lawson', 'plat.any': '不限',
       'f.qty': '張數', 'f.contact': '聯絡方式（僅登入者看得到）', 'f.note': '備註（最多 300 字）',
       'lg.have.exchange': '我有的票', 'lg.have.give': '我要讓出的票', 'lg.want.exchange': '我想換的票', 'lg.want.want': '我想徵的票',
-      zone: z => `${z} 區`,
+      zone: z => z === 'any' ? '不限' : `${z} 區`,
+      'zone.any': '不限',
       'f.contact.ph': '例：X @xxxx／LINE ID／Discord',
       'kind.exchange': '換票', 'kind.give': '讓票', 'kind.want': '徵票',
       'btn.post': '送出投稿', 'btn.save': '儲存修改', 'btn.cancelEdit': '取消', 'btn.open': '＋ 我要投稿',
@@ -36,7 +39,7 @@
       'card.have': '我有的票', 'card.wantEx': '想換的票', 'card.give': '讓出的票', 'card.wantOnly': '徵求的票', 'card.qty': '張數',
       'card.qtyv': n => `${n} 張`,
       'card.contact': '聯絡方式', 'card.contactLogin': '登入後可查看聯絡方式',
-      'card.done': '已完成', 'card.markDone': '標記為已完成', 'card.reopen': '重新開放',
+      'f.status': '狀態', 'chip.hidedone': '只顯示未完成（隱藏已完成）', 'card.done': '已完成', 'card.markDone': '標記為已完成', 'card.reopen': '重新開放',
       'card.edit': '修改', 'card.delete': '刪除', 'card.mine': '我的',
       'card.report': '檢舉', 'card.reported': '已檢舉', 'card.hidden': '因檢舉暫時隱藏中，只有你看得到。如有疑問請聯絡站長。',
       'form.rule': '本區一律依「座位原價」交易，禁止加價轉售。違規者會被檢舉並隱藏。',
@@ -60,10 +63,11 @@
       'form.title': '投稿する', 'form.edit': '投稿を修正する',
       'form.needLogin': '投稿するには Google でログインしてください。', 'form.loginHint': '右上の「Google でログイン」を押してください。',
       'form.warn': '身分証、チケット番号の全文、QR コードなどの個人情報・チケットの機微情報は書き込まないでください。連絡先はログインした人にだけ表示されます。',
-      'f.kind': '種類', 'f.nick': 'ニックネーム（24文字まで）', 'f.session': '公演日', 'f.seat': '座席エリア', 'f.pick': '選択してください', 'f.platform': '購入プラットフォーム', 'plat.zaiko': 'ZAIKO', 'plat.lawson': 'ローソンチケット',
+      'f.kind': '種類', 'f.nick': 'ニックネーム（24文字まで）', 'f.session': '公演日', 'f.seat': '座席エリア', 'f.pick': '選択してください', 'f.platform': '購入プラットフォーム', 'plat.zaiko': 'ZAIKO', 'plat.lawson': 'ローソンチケット', 'plat.any': 'どちらでも',
       'f.qty': '枚数', 'f.contact': '連絡先（ログインした人にだけ表示）', 'f.note': '備考（300文字まで）',
       'lg.have.exchange': '持っているチケット', 'lg.have.give': '譲るチケット', 'lg.want.exchange': '交換したいチケット', 'lg.want.want': '探しているチケット',
-      zone: z => `${z}席`,
+      zone: z => z === 'any' ? 'エリア問わず' : `${z}席`,
+      'zone.any': 'エリア問わず',
       'f.contact.ph': '例：X @xxxx／LINE ID／Discord',
       'kind.exchange': '交換', 'kind.give': '譲渡', 'kind.want': '募集',
       'btn.post': '投稿する', 'btn.save': '修正を保存', 'btn.cancelEdit': 'キャンセル', 'btn.open': '＋ 投稿する',
@@ -73,7 +77,7 @@
       'card.have': '持っているチケット', 'card.wantEx': '交換希望', 'card.give': '譲るチケット', 'card.wantOnly': '探しているチケット', 'card.qty': '枚数',
       'card.qtyv': n => `${n} 枚`,
       'card.contact': '連絡先', 'card.contactLogin': 'ログインすると連絡先が表示されます',
-      'card.done': '完了', 'card.markDone': '完了にする', 'card.reopen': '再び募集する',
+      'f.status': '状態', 'chip.hidedone': '未完了のみ表示（完了を隠す）', 'card.done': '完了', 'card.markDone': '完了にする', 'card.reopen': '再び募集する',
       'card.edit': '修正', 'card.delete': '削除', 'card.mine': '自分',
       'card.report': '通報', 'card.reported': '通報済み', 'card.hidden': '通報により一時的に非表示です（あなたにだけ見えています）。ご不明な点は管理者までご連絡ください。',
       'form.rule': 'このコーナーの取引はすべて「座席の定価」で行います。転売・高額販売は禁止です。違反した投稿は通報され非表示になります。',
@@ -101,7 +105,7 @@
   let lang = detectLang();
   const t = (k, ...a) => { const v = I18N[lang][k]; return typeof v === 'function' ? v(...a) : (v == null ? k : v); };
 
-  const state = { posts: [], reported: new Set(), reporting: null, user: null, filter: 'all', day: 'all', editing: null, loaded: false, failed: false };
+  const state = { posts: [], reported: new Set(), reporting: null, user: null, filter: 'all', day: 'all', hideDone: localStorage.getItem('mio-ticket-hidedone') === '1', editing: null, loaded: false, failed: false };
   let client = null;
 
   /* ---------------- 資料 ---------------- */
@@ -126,7 +130,7 @@
   function cardHtml(p) {
     const mine = state.user && p.user_id === state.user.id;
     const tk = (s, z, pl) => `${esc(s)}<span class="zone">${esc(t('zone', z))}</span>`
-      + (PLATFORMS.includes(pl) ? `<span class="zone plat">${esc(t('plat.' + pl))}</span>` : '');
+      + (WANT_PLATFORMS.includes(pl) ? `<span class="zone plat">${esc(t('plat.' + pl))}</span>` : '');
     const rows = [
       p.kind === 'exchange' ? ['card.have', tk(p.session, p.seat, p.platform)] : null,
       p.kind === 'exchange' ? ['card.wantEx', tk(p.want_session, p.want_seat, p.want_platform)] : null,
@@ -175,6 +179,7 @@
     const d = state.day;     // 場次篩選：我有的票或想要的票任一邊符合就列出
     const list = state.posts.filter(p =>
       (f === 'all' ? true : f === 'mine' ? (state.user && p.user_id === state.user.id) : p.kind === f)
+      && !(state.hideDone && p.status === 'done')
       && (d === 'all' || p.session === d || p.want_session === d));
     $('#tk-count').textContent = t('count', list.length);
     box.innerHTML = list.length ? list.map(cardHtml).join('') : `<p class="state">${esc(t('empty'))}</p>`;
@@ -203,6 +208,10 @@
     $('#grp-want').hidden = !hasWant;
     ['#f-session', '#f-seat', '#f-plat'].forEach(s => { $(s).disabled = !hasHave; });
     ['#f-wsession', '#f-wseat', '#f-wplat'].forEach(s => { $(s).disabled = !hasWant; });
+    $('#f-wseat-any').hidden = $('#f-wseat-any').disabled = k !== 'want';
+    if (k !== 'want' && $('#f-wseat').value === 'any') $('#f-wseat').value = '';
+    $('#f-wplat-any').hidden = $('#f-wplat-any').disabled = k !== 'want';
+    if (k !== 'want' && $('#f-wplat').value === 'any') $('#f-wplat').value = '';
     if (hasHave) $('#lg-have').textContent = t('lg.have.' + k);
     if (hasWant) $('#lg-want').textContent = t('lg.want.' + k);
   }
@@ -265,7 +274,7 @@
     };
     if (!KINDS.includes(kind) || !row.nickname || !row.contact) return;
     if (hasHave && (!SESSIONS.includes(row.session) || !ZONES.includes(row.seat) || !PLATFORMS.includes(row.platform))) return;
-    if (hasWant && (!SESSIONS.includes(row.want_session) || !ZONES.includes(row.want_seat) || !PLATFORMS.includes(row.want_platform))) return;
+    if (hasWant && (!SESSIONS.includes(row.want_session) || !WANT_ZONES.includes(row.want_seat) || !WANT_PLATFORMS.includes(row.want_platform))) return;
     const btn = $('#tk-submit');
     btn.disabled = true; msg(t('saving'));
     const editing = state.editing;
@@ -406,6 +415,15 @@
     if (!b) return;
     state.day = b.dataset.v;
     document.querySelectorAll('#tk-day button').forEach(x => x.classList.toggle('on', x.dataset.v === state.day));
+    render();
+  });
+  const hdBtn = $('#tk-hidedone');
+  function syncHd() { hdBtn.classList.toggle('on', state.hideDone); hdBtn.setAttribute('aria-pressed', state.hideDone); }
+  syncHd();
+  hdBtn.addEventListener('click', () => {
+    state.hideDone = !state.hideDone;
+    try { localStorage.setItem('mio-ticket-hidedone', state.hideDone ? '1' : '0'); } catch (e) { /* ignore */ }
+    syncHd();
     render();
   });
   $('#tk-filter').addEventListener('click', e => { const b = e.target.closest('button[data-v]'); if (b) setFilter(b.dataset.v); });

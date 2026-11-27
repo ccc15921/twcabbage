@@ -22,7 +22,6 @@
     <nav class="topnav" aria-label="Site">
       <a class="brand" href="./" data-i18n="brand">ミオファ的高麗菜園</a>
       <ul class="pages">
-        <li><a href="https://ccc15921.github.io/twmiofa/" data-i18n="nav.ledger">繳稅紀錄簿</a></li>
         <li><a href="./" aria-current="page" data-i18n="nav.tickets">票務交流區</a></li>
       </ul>
       <div class="nav-tools">
@@ -86,6 +85,7 @@
               <option value="" data-i18n="f.pick">請選擇</option>
               <option value="zaiko" data-i18n="plat.zaiko">ZAIKO</option>
               <option value="lawson" data-i18n="plat.lawson">Lawson</option>
+              <option value="any" id="f-wplat-any" data-i18n="plat.any">不限</option>
             </select>
           </label>
         </fieldset>
@@ -106,6 +106,7 @@
                 <option value="S">S</option>
                 <option value="A">A</option>
                 <option value="B">B</option>
+                <option value="any" id="f-wseat-any" data-i18n="zone.any">不限</option>
               </select>
             </label>
           </div>
@@ -157,6 +158,12 @@
           <button type="button" data-v="all" class="on" data-i18n="chip.all">全部</button>
           <button type="button" data-v="Day1">Day1</button>
           <button type="button" data-v="Day2">Day2</button>
+        </div>
+      </div>
+      <div class="filter-group tk-day-filter">
+        <span class="filter-label" data-i18n="f.status">狀態</span>
+        <div class="chips" role="group">
+          <button type="button" id="tk-hidedone" aria-pressed="false" data-i18n="chip.hidedone">只顯示未完成（隱藏已完成）</button>
         </div>
       </div>
       <div id="tk-list" class="tk-list"><p class="state" data-i18n="loading">讀取中…</p></div>

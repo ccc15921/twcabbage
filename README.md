@@ -5,4 +5,4 @@
 - `index.html`：票務交流區；`admin.html`：管理；`privacy.html`：隱私權政策
 - `js/tickets.js`、`js/admin.js`、`js/cloud.js`：功能與 Google 登入
 - `supabase/002_ticket_posts.sql`、`003_ticket_admin.sql`：資料表與管理函式（已執行過則不用再跑）
-- 繳稅紀錄簿請見 https://ccc15921.github.io/twmiofa/
+
