@@ -138,8 +138,13 @@
 
   function cardHtml(p) {
     const mine = state.user && p.user_id === state.user.id;
-    const tk = (s, z, pl) => `${esc(sessLabel(s))}${z ? `<span class="zone">${esc(t('zone', z))}</span>` : ''}`
+    const tags = (z, pl) => (z ? `<span class="zone">${esc(t('zone', z))}</span>` : '')
       + (WANT_PLATFORMS.includes(pl) ? `<span class="zone plat">${esc(t('plat.' + pl))}</span>` : '');
+    // 場次可複選時：場次各自一個小標籤，平台標籤固定獨立一行，版面才整齊
+    const tk = (s, z, pl) => MULTI
+      ? `<div class="tk-sess">${sessList(s).map(v => `<span class="sess">${esc(sessLabel(v))}</span>`).join('')}</div>`
+        + `<div class="tk-meta">${tags(z, pl)}</div>`
+      : `${esc(sessLabel(s))}${tags(z, pl)}`;
     const rows = [
       p.kind === 'exchange' ? ['card.have', tk(p.session, p.seat, p.platform)] : null,
       p.kind === 'exchange' ? ['card.wantEx', tk(p.want_session, p.want_seat, p.want_platform)] : null,

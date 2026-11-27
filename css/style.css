@@ -710,7 +710,7 @@ a.rk-name:hover { color: var(--accent-text); }
 .tk-kind.want { background: transparent; color: var(--accent-text); border: 1px solid var(--green); }
 .tk-nick { margin: 0; font-family: var(--font-round); font-weight: 800; font-size: 1.05rem; color: var(--accent-text); overflow-wrap: anywhere; }
 .tk-info { margin: 0; display: grid; gap: 4px; font-size: .88rem; }
-.tk-info div { display: grid; grid-template-columns: 4em minmax(0, 1fr); gap: 8px; }
+.tk-info > div { display: grid; grid-template-columns: 4em minmax(0, 1fr); gap: 8px; }
 .tk-info dt { color: var(--ink-soft); font-weight: 700; }
 .tk-info dd { margin: 0; overflow-wrap: anywhere; }
 .tk-note { margin: 0; padding: 8px 10px; border-radius: 10px; background: var(--pink-faint); font-size: .85rem; white-space: pre-wrap; overflow-wrap: anywhere; }
@@ -753,3 +753,9 @@ dialog.dlg .field select { width: 100%; padding: 10px 14px; border-radius: 12px;
 .tk-checks-list { display: flex; flex-wrap: wrap; gap: 6px 14px; }
 .tk-check { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-size: .92rem; }
 .tk-check input { width: 1.05em; height: 1.05em; accent-color: var(--pink); }
+
+.tk-sess { display: flex; flex-wrap: wrap; gap: 4px; }
+.tk-sess .sess { display: inline-block; padding: 1px 9px; border-radius: 6px; background: var(--pink-faint); border: 1px solid var(--line); font-size: .8rem; font-weight: 700; line-height: 1.5; }
+.tk-meta { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
+.tk-meta:empty { display: none; }
+.tk-info dd .tk-meta .zone { margin-left: 0; }
