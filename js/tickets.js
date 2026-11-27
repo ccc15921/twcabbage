@@ -38,7 +38,7 @@
       'agree.label': '我已閱讀並同意以上免責聲明', 'agree.need': '請先勾選同意免責聲明。',
       'form.warn': '請勿張貼身分證、完整票號、QR Code 等個人或票券敏感資料。聯絡方式只有登入的人看得到。',
       'f.kind': '類型', 'f.nick': '暱稱（最多 24 字）', 'f.session': '場次', 'f.sessionMulti': '場次（可複選）', 'f.seat': '座位區域', 'f.pick': '請選擇', 'f.platform': '購票平台', 'plat.zaiko': 'ZAIKO', 'plat.lawson': 'Lawson', 'plat.any': '不限',
-      'f.qty': '張數', 'f.contact': '聯絡方式（僅登入者看得到）', 'f.note': '備註（最多 300 字）',
+      'f.qty': '張數', 'f.contact': '聯絡方式（僅登入者看得到）', 'f.note': '備註（最多 300 字，母票/子票可在此備註）',
       'lg.have.exchange': '我有的票', 'lg.have.give': '我要讓出的票', 'lg.want.exchange': '我想換的票', 'lg.want.want': '我想徵的票',
       zone: z => z === 'any' ? '不限' : `${z} 區`,
       'zone.any': '不限',
