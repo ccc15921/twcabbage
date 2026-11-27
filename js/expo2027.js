@@ -2,6 +2,7 @@
 window.TICKET_EVENT = {
   id: 'expo2027',
   sessions: ['EXPO_Day1', 'EXPO_Day2', 'EXPO_Day3', 'Stage_1', 'Stage_2', 'Stage_3', 'Dreams_Stage'],
+  multiSession: true,   // 場次可複選
   zones: [],   // 這場票不分座位區域
   i18n: {
     'zh-Hant': {

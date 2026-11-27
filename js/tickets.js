@@ -14,7 +14,9 @@
   const SESSIONS = EV.sessions;
   const ZONES = EV.zones || [];                 // 空陣列＝這場票不分座位區域
   const WANT_ZONES = ZONES.length ? ZONES.concat('any') : [''];
-  const sessLabel = v => String(v || '').replace(/_/g, ' ');
+  const MULTI = !!EV.multiSession;               // 場次可複選：以逗號串起來存在 session / want_session
+  const sessLabel = v => String(v || '').split(',').map(x => x.replace(/_/g, ' ')).join('／');
+  const sessList = v => String(v || '').split(',').filter(Boolean);
   const PLATFORMS = ['zaiko', 'lawson'];
   const WANT_PLATFORMS = PLATFORMS.concat('any');
 
@@ -28,7 +30,7 @@
       'form.title': '我要投稿', 'form.edit': '修改我的投稿',
       'form.needLogin': '投稿需要先用 Google 登入。', 'form.loginHint': '請點右上角的「Google 登入」。',
       'form.warn': '請勿張貼身分證、完整票號、QR Code 等個人或票券敏感資料。聯絡方式只有登入的人看得到。',
-      'f.kind': '類型', 'f.nick': '暱稱（最多 24 字）', 'f.session': '場次', 'f.seat': '座位區域', 'f.pick': '請選擇', 'f.platform': '購票平台', 'plat.zaiko': 'ZAIKO', 'plat.lawson': 'Lawson', 'plat.any': '不限',
+      'f.kind': '類型', 'f.nick': '暱稱（最多 24 字）', 'f.session': '場次', 'f.sessionMulti': '場次（可複選）', 'f.seat': '座位區域', 'f.pick': '請選擇', 'f.platform': '購票平台', 'plat.zaiko': 'ZAIKO', 'plat.lawson': 'Lawson', 'plat.any': '不限',
       'f.qty': '張數', 'f.contact': '聯絡方式（僅登入者看得到）', 'f.note': '備註（最多 300 字）',
       'lg.have.exchange': '我有的票', 'lg.have.give': '我要讓出的票', 'lg.want.exchange': '我想換的票', 'lg.want.want': '我想徵的票',
       zone: z => z === 'any' ? '不限' : `${z} 區`,
@@ -67,7 +69,7 @@
       'form.title': '投稿する', 'form.edit': '投稿を修正する',
       'form.needLogin': '投稿するには Google でログインしてください。', 'form.loginHint': '右上の「Google でログイン」を押してください。',
       'form.warn': '身分証、チケット番号の全文、QR コードなどの個人情報・チケットの機微情報は書き込まないでください。連絡先はログインした人にだけ表示されます。',
-      'f.kind': '種類', 'f.nick': 'ニックネーム（24文字まで）', 'f.session': '公演日', 'f.seat': '座席エリア', 'f.pick': '選択してください', 'f.platform': '購入プラットフォーム', 'plat.zaiko': 'ZAIKO', 'plat.lawson': 'ローソンチケット', 'plat.any': 'どちらでも',
+      'f.kind': '種類', 'f.nick': 'ニックネーム（24文字まで）', 'f.session': '公演日', 'f.sessionMulti': '公演（複数選択可）', 'f.seat': '座席エリア', 'f.pick': '選択してください', 'f.platform': '購入プラットフォーム', 'plat.zaiko': 'ZAIKO', 'plat.lawson': 'ローソンチケット', 'plat.any': 'どちらでも',
       'f.qty': '枚数', 'f.contact': '連絡先（ログインした人にだけ表示）', 'f.note': '備考（300文字まで）',
       'lg.have.exchange': '持っているチケット', 'lg.have.give': '譲るチケット', 'lg.want.exchange': '交換したいチケット', 'lg.want.want': '探しているチケット',
       zone: z => z === 'any' ? 'エリア問わず' : `${z}席`,
@@ -187,7 +189,7 @@
     const list = state.posts.filter(p =>
       (f === 'all' ? true : f === 'mine' ? (state.user && p.user_id === state.user.id) : p.kind === f)
       && !(state.hideDone && p.status === 'done')
-      && (d === 'all' || p.session === d || p.want_session === d));
+      && (d === 'all' || sessList(p.session).includes(d) || sessList(p.want_session).includes(d)));
     $('#tk-count').textContent = t('count', list.length);
     box.innerHTML = list.length ? list.map(cardHtml).join('') : `<p class="state">${esc(t('empty'))}</p>`;
   }
@@ -226,6 +228,16 @@
     if (hasHave) $('#lg-have').textContent = t('lg.have.' + k);
     if (hasWant) $('#lg-want').textContent = t('lg.want.' + k);
   }
+  // 場次欄位：單選用原本的下拉選單，複選用勾選框
+  const getSess = id => MULTI
+    ? SESSIONS.filter(v => document.querySelector(`#${id}-box input[value="${v}"]`).checked).join(',')
+    : $('#' + id).value;
+  const setSess = (id, val) => {
+    if (!MULTI) { $('#' + id).value = val || ''; return; }
+    const on = sessList(val);
+    SESSIONS.forEach(v => { document.querySelector(`#${id}-box input[value="${v}"]`).checked = on.includes(v); });
+  };
+  const sessOk = v => MULTI ? (sessList(v).length > 0 && sessList(v).every(x => SESSIONS.includes(x))) : SESSIONS.includes(v);
   function resetForm() {
     state.editing = null;
     $('#tk-form').reset();
@@ -254,9 +266,9 @@
     state.editing = id;
     $('#f-kind').value = p.kind; $('#f-nick').value = p.nickname;
     syncKind();
-    $('#f-session').value = p.session || ''; $('#f-seat').value = p.seat || '';
+    setSess('f-session', p.session); $('#f-seat').value = p.seat || '';
     $('#f-plat').value = p.platform || '';
-    $('#f-wsession').value = p.want_session || ''; $('#f-wseat').value = p.want_seat || ''; $('#f-wplat').value = p.want_platform || '';
+    setSess('f-wsession', p.want_session); $('#f-wseat').value = p.want_seat || ''; $('#f-wplat').value = p.want_platform || '';
     $('#f-qty').value = String(p.qty);
     $('#f-contact').value = p.contact || ''; $('#f-note').value = p.note || '';
     $('#tk-form-title').textContent = t('form.edit');
@@ -274,10 +286,10 @@
       event: EV.id,
       kind,
       nickname: $('#f-nick').value.trim(),
-      session: hasHave ? $('#f-session').value : '',
+      session: hasHave ? getSess('f-session') : '',
       seat: hasHave && ZONES.length ? $('#f-seat').value : '',
       platform: hasHave ? $('#f-plat').value : '',
-      want_session: hasWant ? $('#f-wsession').value : '',
+      want_session: hasWant ? getSess('f-wsession') : '',
       want_seat: hasWant && ZONES.length ? $('#f-wseat').value : '',
       want_platform: hasWant ? $('#f-wplat').value : '',
       qty: Number($('#f-qty').value) || 1,
@@ -285,8 +297,9 @@
       note: $('#f-note').value.trim(),
     };
     if (!KINDS.includes(kind) || !row.nickname || !row.contact) return;
-    if (hasHave && (!SESSIONS.includes(row.session) || !(ZONES.length ? ZONES.includes(row.seat) : row.seat === '') || !PLATFORMS.includes(row.platform))) return;
-    if (hasWant && (!SESSIONS.includes(row.want_session) || !(ZONES.length ? WANT_ZONES.includes(row.want_seat) : row.want_seat === '') || !WANT_PLATFORMS.includes(row.want_platform))) return;
+    if (MULTI && ((hasHave && !row.session) || (hasWant && !row.want_session))) { msg(t('f.sessionMulti'), true); return; }
+    if (hasHave && (!sessOk(row.session) || !(ZONES.length ? ZONES.includes(row.seat) : row.seat === '') || !PLATFORMS.includes(row.platform))) return;
+    if (hasWant && (!sessOk(row.want_session) || !(ZONES.length ? WANT_ZONES.includes(row.want_seat) : row.want_seat === '') || !WANT_PLATFORMS.includes(row.want_platform))) return;
     const btn = $('#tk-submit');
     btn.disabled = true; msg(t('saving'));
     const editing = state.editing;
@@ -413,7 +426,19 @@
   /* ---------------- init ---------------- */
   // 場次、座位區域的選項與場次篩選鈕依活動設定產生
   const optHtml = (list, label) => list.map(v => `<option value="${esc(v)}">${esc(label(v))}</option>`).join('');
-  ['#f-session', '#f-wsession'].forEach(id => { $(id).insertAdjacentHTML('beforeend', optHtml(SESSIONS, sessLabel)); });
+  ['#f-session', '#f-wsession'].forEach(id => {
+    const sel = $(id);
+    if (!MULTI) { sel.insertAdjacentHTML('beforeend', optHtml(SESSIONS, sessLabel)); return; }
+    // 複選：隱藏下拉選單，改放一組勾選框（至少勾一個，由 submit 檢查）
+    const lab = sel.closest('label');
+    lab.hidden = true; sel.required = false; sel.disabled = true;
+    const box = document.createElement('fieldset');
+    box.className = 'field tk-checks'; box.id = sel.id + '-box';
+    box.innerHTML = `<legend class="field-label" data-i18n="f.sessionMulti"></legend><div class="tk-checks-list">`
+      + SESSIONS.map(v => `<label class="tk-check"><input type="checkbox" value="${esc(v)}"><span>${esc(sessLabel(v))}</span></label>`).join('')
+      + '</div>';
+    lab.parentNode.insertBefore(box, lab);
+  });
   if (ZONES.length) ['#f-seat', '#f-wseat'].forEach(id => {
     const sel = $(id), any = sel.querySelector('option[value="any"]');
     const html = optHtml(ZONES, z => z);

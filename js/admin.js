@@ -21,7 +21,7 @@
 
   function cardHtml(p) {
     const PLAT = { zaiko: 'ZAIKO', lawson: 'Lawson' };
-    const tk = (s, z, pl) => `${String(s || '').replace(/_/g, ' ')} ${z ? (z === 'any' ? '不限區' : z + ' 區') : ''} ${pl === 'any' ? '平台不限' : (PLAT[pl] || '')}`.replace(/ +/g, ' ').trim();
+    const tk = (s, z, pl) => `${String(s || '').split(',').map(v => v.replace(/_/g, ' ')).join('／')} ${z ? (z === 'any' ? '不限區' : z + ' 區') : ''} ${pl === 'any' ? '平台不限' : (PLAT[pl] || '')}`.replace(/ +/g, ' ').trim();
     const info = [
       p.kind === 'exchange' ? ['我有的票', tk(p.session, p.seat, p.platform)] : null,
       p.kind === 'exchange' ? ['想換的票', tk(p.want_session, p.want_seat, p.want_platform)] : null,
