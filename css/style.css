@@ -765,3 +765,15 @@ dialog.dlg .field select { width: 100%; padding: 10px 14px; border-radius: 12px;
 .tk-agree-list { margin: 0 0 8px; padding-left: 1.3em; font-size: .8rem; line-height: 1.6; color: var(--ink-soft); }
 .tk-agree-list li { margin-bottom: 2px; }
 .tk-agree .tk-check { font-weight: 700; }
+
+.ev-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 14px; }
+.ev-card { display: flex; flex-direction: column; gap: 8px; padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--card); color: inherit; text-decoration: none; transition: border-color .15s, transform .15s; }
+.ev-card:hover { border-color: var(--pink); transform: translateY(-2px); }
+.ev-card h3 { margin: 0; font-size: 1.1rem; }
+.ev-card p { margin: 0; font-size: .88rem; color: var(--ink-soft); }
+.ev-tag { align-self: flex-start; }
+.ev-go { margin-top: auto; padding-top: 6px; font-weight: 800; font-size: .9rem; color: var(--accent-text); }
+
+.home-latest { margin-top: 28px; }
+a.tk-card.ev-post { display: flex; flex-direction: column; gap: 8px; color: inherit; text-decoration: none; transition: border-color .15s; }
+a.tk-card.ev-post:hover { border-color: var(--pink); }

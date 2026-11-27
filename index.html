@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>票務交流區｜ミオファ的高麗菜園</title>
-  <meta name="description" content="百花繚乱あやふぶみ 演唱會，台灣ミオファ的票務交流區。非官方粉絲製作。">
+  <title>ミオファ的高麗菜園｜票務交流區</title>
+  <meta name="description" content="台灣ミオファ的票務交流區，列出目前開放的活動。非官方粉絲製作。">
   <meta name="theme-color" content="#ffffff">
   <script>
     try {
@@ -22,7 +22,7 @@
     <nav class="topnav" aria-label="Site">
       <a class="brand" href="./" data-i18n="brand">ミオファ的高麗菜園</a>
       <ul class="pages">
-        <li><a href="./" aria-current="page" data-i18n="nav.ayafu">百花繚乱 演唱會</a></li>
+        <li><a href="ayafubumi1st.html" data-i18n="nav.ayafu">百花繚乱 演唱會</a></li>
         <li><a href="expo2027.html" data-i18n="nav.expo">EXPO/FES 2027</a></li>
       </ul>
       <div class="nav-tools">
@@ -34,138 +34,34 @@
       </div>
     </nav>
     <div class="hero">
-      <p class="eyebrow">HYAKKA RYORAN AYAFUBUMI TICKETS</p>
-      <h1 data-i18n="title">票務交流區</h1>
-      <p class="lead" data-i18n="lead"></p>
+      <p class="eyebrow">MIOFA TICKET BOARD</p>
+      <h1 data-i18n="home.title">票務交流區</h1>
+      <p class="lead" data-i18n="home.lead"></p>
     </div>
   </header>
 
   <main class="tkpage">
-    <dialog id="post-dlg" class="dlg tk-dlg" aria-labelledby="tk-form-title">
-      <form method="dialog"><button class="lb-close" aria-label="×">×</button></form>
-      <h2 id="tk-form-title" data-i18n="form.title">我要投稿</h2>
-      <div id="tk-login" class="state" hidden>
-        <p data-i18n="form.needLogin"></p>
-        <p class="set-note" data-i18n="form.loginHint"></p>
+    <section aria-labelledby="ev-title">
+      <h2 class="log-h" id="ev-title" data-i18n="home.list">目前的票務交流活動</h2>
+      <div class="ev-grid">
+        <a class="ev-card" href="ayafubumi1st.html">
+          <span class="tag ev-tag" data-i18n="home.open">開放中</span>
+          <h3 data-i18n="ev.ayafu.name">百花繚乱あやふぶみ 演唱會</h3>
+          <p data-i18n="ev.ayafu.desc"></p>
+          <span class="ev-go" data-i18n="home.go">前往票務交流區 →</span>
+        </a>
+        <a class="ev-card" href="expo2027.html">
+          <span class="tag ev-tag" data-i18n="home.open">開放中</span>
+          <h3 data-i18n="ev.expo.name">Hololive EXPO/FES 2027</h3>
+          <p data-i18n="ev.expo.desc"></p>
+          <span class="ev-go" data-i18n="home.go">前往票務交流區 →</span>
+        </a>
       </div>
-      <form id="tk-form" class="card-form" autocomplete="off" hidden>
-        <div class="field-pair">
-          <label class="field"><span class="field-label" data-i18n="f.kind">類型</span>
-            <select id="f-kind" required>
-              <option value="exchange" data-i18n="kind.exchange">換票</option>
-              <option value="give" data-i18n="kind.give">讓票</option>
-              <option value="want" data-i18n="kind.want">徵票</option>
-            </select>
-          </label>
-          <label class="field"><span class="field-label" data-i18n="f.nick">暱稱（最多 24 字）</span>
-            <input type="text" id="f-nick" maxlength="24" required>
-          </label>
-        </div>
-        <fieldset class="tk-group" id="grp-have">
-          <legend id="lg-have">我有的票</legend>
-          <div class="field-pair">
-            <label class="field"><span class="field-label" data-i18n="f.session">場次</span>
-              <select id="f-session" required>
-                <option value="" data-i18n="f.pick">請選擇</option>
-              </select>
-            </label>
-            <label class="field"><span class="field-label" data-i18n="f.seat">座位區域</span>
-              <select id="f-seat" required>
-                <option value="" data-i18n="f.pick">請選擇</option>
-              </select>
-            </label>
-          </div>
-          <label class="field"><span class="field-label" data-i18n="f.platform">購票平台</span>
-            <select id="f-plat" required>
-              <option value="" data-i18n="f.pick">請選擇</option>
-              <option value="zaiko" data-i18n="plat.zaiko">ZAIKO</option>
-              <option value="lawson" data-i18n="plat.lawson">Lawson</option>
-            </select>
-          </label>
-        </fieldset>
-        <fieldset class="tk-group" id="grp-want">
-          <legend id="lg-want">我想換的票</legend>
-          <div class="field-pair">
-            <label class="field"><span class="field-label" data-i18n="f.session">場次</span>
-              <select id="f-wsession" required>
-                <option value="" data-i18n="f.pick">請選擇</option>
-              </select>
-            </label>
-            <label class="field"><span class="field-label" data-i18n="f.seat">座位區域</span>
-              <select id="f-wseat" required>
-                <option value="" data-i18n="f.pick">請選擇</option>
-                <option value="any" id="f-wseat-any" data-i18n="zone.any">不限</option>
-              </select>
-            </label>
-          </div>
-          <label class="field"><span class="field-label" data-i18n="f.platform">購票平台</span>
-            <select id="f-wplat" required>
-              <option value="" data-i18n="f.pick">請選擇</option>
-              <option value="zaiko" data-i18n="plat.zaiko">ZAIKO</option>
-              <option value="lawson" data-i18n="plat.lawson">Lawson</option>
-              <option value="any" id="f-wplat-any" data-i18n="plat.any">不限</option>
-            </select>
-          </label>
-        </fieldset>
-        <div class="field-pair">
-          <label class="field"><span class="field-label" data-i18n="f.qty">張數</span>
-            <select id="f-qty"></select>
-          </label>
-          <label class="field"><span class="field-label" data-i18n="f.contact">聯絡方式（僅登入者看得到）</span>
-            <input type="text" id="f-contact" maxlength="100" required data-i18n-ph="f.contact.ph">
-            <small class="field-hint" data-i18n="f.contact.hint">請勿留手機號碼／Email，建議以 Discord／X 為主。</small>
-          </label>
-        </div>
-        <p class="tk-rule" data-i18n="form.rule"></p>
-        <label class="field"><span class="field-label" data-i18n="f.note">備註（最多 300 字）</span>
-          <textarea id="f-note" maxlength="300" rows="3"></textarea>
-        </label>
-        <fieldset class="tk-agree">
-          <legend data-i18n="agree.title">免責聲明</legend>
-          <ol class="tk-agree-list">
-            <li data-i18n="agree.1"></li>
-            <li data-i18n="agree.2"></li>
-            <li data-i18n="agree.3"></li>
-            <li data-i18n="agree.4"></li>
-            <li data-i18n="agree.5"></li>
-          </ol>
-          <label class="tk-check"><input type="checkbox" id="f-agree" required><span data-i18n="agree.label">我已閱讀並同意以上免責聲明</span></label>
-        </fieldset>
-        <p class="dlg-msg" id="tk-msg" hidden></p>
-        <div class="del-actions">
-          <button type="button" class="btn ghost" id="tk-cancel" data-i18n="btn.cancelEdit">取消</button>
-          <button type="submit" class="btn" id="tk-submit" data-i18n="btn.post">送出投稿</button>
-        </div>
-        <p class="set-note" data-i18n="form.warn"></p>
-      </form>
-    </dialog>
+    </section>
 
-    <section aria-labelledby="tk-list-title">
-      <div class="tk-listhead">
-        <h2 class="log-h" id="tk-list-title"><span data-i18n="list.title">投稿列表</span> <span class="log-count" id="tk-count"></span></h2>
-        <button type="button" class="btn tk-open" id="tk-open" data-i18n="btn.open">＋ 我要投稿</button>
-      </div>
-      <p class="dlg-msg" id="tk-toast" role="status" hidden></p>
-      <div class="chips" id="tk-filter" role="group">
-        <button type="button" data-v="all" class="on" data-i18n="chip.all">全部</button>
-        <button type="button" data-v="exchange" data-i18n="kind.exchange">換票</button>
-        <button type="button" data-v="give" data-i18n="kind.give">讓票</button>
-        <button type="button" data-v="want" data-i18n="kind.want">徵票</button>
-        <button type="button" data-v="mine" data-i18n="chip.mine" hidden>我的投稿</button>
-      </div>
-      <div class="filter-group tk-day-filter">
-        <span class="filter-label" data-i18n="f.session">場次</span>
-        <div class="chips" id="tk-day" role="group">
-          <button type="button" data-v="all" class="on" data-i18n="chip.all">全部</button>
-        </div>
-      </div>
-      <div class="filter-group tk-day-filter">
-        <span class="filter-label" data-i18n="f.status">狀態</span>
-        <div class="chips" role="group">
-          <button type="button" id="tk-hidedone" aria-pressed="false" data-i18n="chip.hidedone">只顯示未完成（隱藏已完成）</button>
-        </div>
-      </div>
-      <div id="tk-list" class="tk-list"><p class="state" data-i18n="loading">讀取中…</p></div>
+    <section aria-labelledby="new-title" class="home-latest">
+      <h2 class="log-h" id="new-title" data-i18n="home.latest">最新貼文</h2>
+      <div id="ev-latest" class="tk-list"><p class="state" data-i18n="loading">讀取中…</p></div>
     </section>
   </main>
 
@@ -175,32 +71,9 @@
     <p class="footer-links"><a href="privacy.html">隱私權政策 / プライバシーポリシー</a></p>
   </footer>
 
-  <dialog id="report-dlg" class="dlg" aria-labelledby="rp-title">
-    <form method="dialog"><button class="lb-close" aria-label="×">×</button></form>
-    <h2 id="rp-title" data-i18n="rp.title">檢舉這篇投稿</h2>
-    <p data-i18n="rp.desc"></p>
-    <label class="field"><span class="field-label" data-i18n="rp.reason">原因</span>
-      <select id="rp-reason">
-        <option value="scam" data-i18n="rp.scam">疑似詐騙</option>
-        <option value="overprice" data-i18n="rp.overprice">不是原價（加價轉售）</option>
-        <option value="spam" data-i18n="rp.spam">洗版／廣告</option>
-        <option value="inappropriate" data-i18n="rp.inappropriate">不當內容</option>
-        <option value="other" data-i18n="rp.other">其他</option>
-      </select>
-    </label>
-    <label class="field"><span class="field-label" data-i18n="rp.detail">補充說明（選填，最多 200 字）</span>
-      <textarea id="rp-detail" maxlength="200" rows="3"></textarea>
-    </label>
-    <p class="dlg-msg" id="rp-msg" hidden></p>
-    <div class="del-actions">
-      <button type="button" class="btn ghost" id="rp-cancel" data-i18n="rp.cancel">取消</button>
-      <button type="button" class="btn" id="rp-send" data-i18n="rp.send">送出檢舉</button>
-    </div>
-  </dialog>
-
   <script src="js/vendor/supabase.js"></script>
   <script src="js/cloud.js?v=20261027a"></script>
-  <script src="js/tickets.js?v=20261127h"></script>
+  <script src="js/home.js?v=20261127j"></script>
   <script src="js/totop.js"></script>
 </body>
 </html>
