@@ -9,15 +9,18 @@
   const THEME_KEY = 'mio-ledger-theme';
   const COLS_PUBLIC = 'id,user_id,kind,nickname,session,seat,platform,want_session,want_seat,want_platform,qty,note,status,hidden,created_at,updated_at';
   const KINDS = ['exchange', 'give', 'want'];
-  const SESSIONS = ['Day1', 'Day2'];
-  const ZONES = ['SS', 'S', 'A', 'B'];
-  const WANT_ZONES = ZONES.concat('any');
+  // 活動設定：expo2027.html 在載入本檔前先設定 window.TICKET_EVENT；沒設定就是百花繚乱あやふぶみ 演唱會
+  const EV = window.TICKET_EVENT || { id: 'ayafubumi', sessions: ['Day1', 'Day2'], zones: ['SS', 'S', 'A', 'B'] };
+  const SESSIONS = EV.sessions;
+  const ZONES = EV.zones || [];                 // 空陣列＝這場票不分座位區域
+  const WANT_ZONES = ZONES.length ? ZONES.concat('any') : [''];
+  const sessLabel = v => String(v || '').replace(/_/g, ' ');
   const PLATFORMS = ['zaiko', 'lawson'];
   const WANT_PLATFORMS = PLATFORMS.concat('any');
 
   const I18N = {
     'zh-Hant': {
-      'doc.title': '票務交流區｜ミオファ的高麗菜園',
+      'doc.title': '票務交流區｜ミオファ的高麗菜園', 'nav.ayafu': '百花繚乱 演唱會', 'nav.expo': 'EXPO/FES 2027',
       'doc.desc': '百花繚乱あやふぶみ 演唱會，台灣ミオファ的票務交流區。非官方粉絲製作。',
       brand: 'ミオファ的高麗菜園', 'nav.ledger': '繳稅紀錄簿', 'nav.tickets': '票務交流區',
       title: '票務交流區',
@@ -56,7 +59,7 @@
       'footer.tk': '票務交流為使用者自行聯繫，本站不經手交易，不保證票券真偽，也不協助處理任何交易糾紛，請自行解決。請小心詐騙，建議面交或使用官方轉讓管道。',
     },
     ja: {
-      'doc.title': 'チケット交流所｜ミオファ的高麗菜園',
+      'doc.title': 'チケット交流所｜ミオファ的高麗菜園', 'nav.ayafu': '百花繚乱 ライブ', 'nav.expo': 'EXPO/FES 2027',
       'doc.desc': '百花繚乱あやふぶみ ライブ、台湾ミオファのチケット交流所。非公式ファンサイトです。',
       brand: 'ミオファ的高麗菜園', 'nav.ledger': '納税記録簿', 'nav.tickets': 'チケット交流所',
       title: 'チケット交流所',
@@ -96,6 +99,8 @@
     },
   };
 
+  if (EV.i18n) Object.keys(EV.i18n).forEach(l => { if (I18N[l]) Object.assign(I18N[l], EV.i18n[l]); });
+
   const $ = s => document.querySelector(s);
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g,
     c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -114,7 +119,7 @@
   async function load() {
     if (!client) { state.failed = true; render(); return; }
     const { data, error } = await client.from('ticket_posts')
-      .select(state.user ? '*' : COLS_PUBLIC).order('created_at', { ascending: false }).limit(500);
+      .select(state.user ? '*' : COLS_PUBLIC).eq('event', EV.id).order('created_at', { ascending: false }).limit(500);
     if (error) { console.warn('[tickets] load failed', error); state.failed = true; }
     else { state.failed = false; state.posts = data || []; }
     state.loaded = true;
@@ -131,7 +136,7 @@
 
   function cardHtml(p) {
     const mine = state.user && p.user_id === state.user.id;
-    const tk = (s, z, pl) => `${esc(s)}<span class="zone">${esc(t('zone', z))}</span>`
+    const tk = (s, z, pl) => `${esc(sessLabel(s))}${z ? `<span class="zone">${esc(t('zone', z))}</span>` : ''}`
       + (WANT_PLATFORMS.includes(pl) ? `<span class="zone plat">${esc(t('plat.' + pl))}</span>` : '');
     const rows = [
       p.kind === 'exchange' ? ['card.have', tk(p.session, p.seat, p.platform)] : null,
@@ -208,8 +213,12 @@
     const hasHave = k === 'exchange' || k === 'give', hasWant = k === 'exchange' || k === 'want';
     $('#grp-have').hidden = !hasHave;
     $('#grp-want').hidden = !hasWant;
-    ['#f-session', '#f-seat', '#f-plat'].forEach(s => { $(s).disabled = !hasHave; });
-    ['#f-wsession', '#f-wseat', '#f-wplat'].forEach(s => { $(s).disabled = !hasWant; });
+    const seatOn = ZONES.length > 0;
+    ['#f-session', '#f-plat'].forEach(s => { $(s).disabled = !hasHave; });
+    ['#f-wsession', '#f-wplat'].forEach(s => { $(s).disabled = !hasWant; });
+    $('#f-seat').disabled = !hasHave || !seatOn;
+    $('#f-wseat').disabled = !hasWant || !seatOn;
+    $('#f-seat').closest('label').hidden = $('#f-wseat').closest('label').hidden = !seatOn;
     $('#f-wseat-any').hidden = $('#f-wseat-any').disabled = k !== 'want';
     if (k !== 'want' && $('#f-wseat').value === 'any') $('#f-wseat').value = '';
     $('#f-wplat-any').hidden = $('#f-wplat-any').disabled = k !== 'want';
@@ -262,21 +271,22 @@
     const kind = $('#f-kind').value;
     const hasHave = kind === 'exchange' || kind === 'give', hasWant = kind === 'exchange' || kind === 'want';
     const row = {
+      event: EV.id,
       kind,
       nickname: $('#f-nick').value.trim(),
       session: hasHave ? $('#f-session').value : '',
-      seat: hasHave ? $('#f-seat').value : '',
+      seat: hasHave && ZONES.length ? $('#f-seat').value : '',
       platform: hasHave ? $('#f-plat').value : '',
       want_session: hasWant ? $('#f-wsession').value : '',
-      want_seat: hasWant ? $('#f-wseat').value : '',
+      want_seat: hasWant && ZONES.length ? $('#f-wseat').value : '',
       want_platform: hasWant ? $('#f-wplat').value : '',
       qty: Number($('#f-qty').value) || 1,
       contact: $('#f-contact').value.trim(),
       note: $('#f-note').value.trim(),
     };
     if (!KINDS.includes(kind) || !row.nickname || !row.contact) return;
-    if (hasHave && (!SESSIONS.includes(row.session) || !ZONES.includes(row.seat) || !PLATFORMS.includes(row.platform))) return;
-    if (hasWant && (!SESSIONS.includes(row.want_session) || !WANT_ZONES.includes(row.want_seat) || !WANT_PLATFORMS.includes(row.want_platform))) return;
+    if (hasHave && (!SESSIONS.includes(row.session) || !(ZONES.length ? ZONES.includes(row.seat) : row.seat === '') || !PLATFORMS.includes(row.platform))) return;
+    if (hasWant && (!SESSIONS.includes(row.want_session) || !(ZONES.length ? WANT_ZONES.includes(row.want_seat) : row.want_seat === '') || !WANT_PLATFORMS.includes(row.want_platform))) return;
     const btn = $('#tk-submit');
     btn.disabled = true; msg(t('saving'));
     const editing = state.editing;
@@ -401,6 +411,15 @@
   }
 
   /* ---------------- init ---------------- */
+  // 場次、座位區域的選項與場次篩選鈕依活動設定產生
+  const optHtml = (list, label) => list.map(v => `<option value="${esc(v)}">${esc(label(v))}</option>`).join('');
+  ['#f-session', '#f-wsession'].forEach(id => { $(id).insertAdjacentHTML('beforeend', optHtml(SESSIONS, sessLabel)); });
+  if (ZONES.length) ['#f-seat', '#f-wseat'].forEach(id => {
+    const sel = $(id), any = sel.querySelector('option[value="any"]');
+    const html = optHtml(ZONES, z => z);
+    if (any) any.insertAdjacentHTML('beforebegin', html); else sel.insertAdjacentHTML('beforeend', html);
+  });
+  $('#tk-day').insertAdjacentHTML('beforeend', SESSIONS.map(v => `<button type="button" data-v="${esc(v)}">${esc(sessLabel(v))}</button>`).join(''));
   applyI18n();
   document.querySelectorAll('.lang-switch button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
   $('#btn-theme').addEventListener('click', toggleTheme);

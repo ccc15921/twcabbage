@@ -22,7 +22,8 @@
     <nav class="topnav" aria-label="Site">
       <a class="brand" href="./" data-i18n="brand">ミオファ的高麗菜園</a>
       <ul class="pages">
-        <li><a href="./" aria-current="page" data-i18n="nav.tickets">票務交流區</a></li>
+        <li><a href="./" aria-current="page" data-i18n="nav.ayafu">百花繚乱 演唱會</a></li>
+        <li><a href="expo2027.html" data-i18n="nav.expo">EXPO/FES 2027</a></li>
       </ul>
       <div class="nav-tools">
         <div class="lang-switch" role="group" aria-label="Language">
@@ -66,8 +67,6 @@
             <label class="field"><span class="field-label" data-i18n="f.session">場次</span>
               <select id="f-session" required>
                 <option value="" data-i18n="f.pick">請選擇</option>
-                <option value="Day1">Day1</option>
-                <option value="Day2">Day2</option>
               </select>
             </label>
             <label class="field"><span class="field-label" data-i18n="f.seat">座位區域</span>
@@ -85,7 +84,6 @@
               <option value="" data-i18n="f.pick">請選擇</option>
               <option value="zaiko" data-i18n="plat.zaiko">ZAIKO</option>
               <option value="lawson" data-i18n="plat.lawson">Lawson</option>
-              <option value="any" id="f-wplat-any" data-i18n="plat.any">不限</option>
             </select>
           </label>
         </fieldset>
@@ -95,8 +93,6 @@
             <label class="field"><span class="field-label" data-i18n="f.session">場次</span>
               <select id="f-wsession" required>
                 <option value="" data-i18n="f.pick">請選擇</option>
-                <option value="Day1">Day1</option>
-                <option value="Day2">Day2</option>
               </select>
             </label>
             <label class="field"><span class="field-label" data-i18n="f.seat">座位區域</span>
@@ -115,6 +111,7 @@
               <option value="" data-i18n="f.pick">請選擇</option>
               <option value="zaiko" data-i18n="plat.zaiko">ZAIKO</option>
               <option value="lawson" data-i18n="plat.lawson">Lawson</option>
+              <option value="any" id="f-wplat-any" data-i18n="plat.any">不限</option>
             </select>
           </label>
         </fieldset>
@@ -157,8 +154,6 @@
         <span class="filter-label" data-i18n="f.session">場次</span>
         <div class="chips" id="tk-day" role="group">
           <button type="button" data-v="all" class="on" data-i18n="chip.all">全部</button>
-          <button type="button" data-v="Day1">Day1</button>
-          <button type="button" data-v="Day2">Day2</button>
         </div>
       </div>
       <div class="filter-group tk-day-filter">

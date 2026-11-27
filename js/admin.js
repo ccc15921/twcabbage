@@ -21,7 +21,7 @@
 
   function cardHtml(p) {
     const PLAT = { zaiko: 'ZAIKO', lawson: 'Lawson' };
-    const tk = (s, z, pl) => `${s} ${z} 區 ${PLAT[pl] || ''}`.trim();
+    const tk = (s, z, pl) => `${String(s || '').replace(/_/g, ' ')} ${z ? (z === 'any' ? '不限區' : z + ' 區') : ''} ${pl === 'any' ? '平台不限' : (PLAT[pl] || '')}`.replace(/ +/g, ' ').trim();
     const info = [
       p.kind === 'exchange' ? ['我有的票', tk(p.session, p.seat, p.platform)] : null,
       p.kind === 'exchange' ? ['想換的票', tk(p.want_session, p.want_seat, p.want_platform)] : null,
@@ -33,6 +33,7 @@
       `<li><b>${esc(REASON[r.reason] || r.reason)}</b>${r.detail ? `：${esc(r.detail)}` : ''} <small class="muted">${esc(fmt(r.at))}</small></li>`).join('');
     return `<article class="tk-card ${esc(p.kind)}${p.hidden ? ' hidden-post' : ''}" data-id="${esc(p.id)}">
       <header class="tk-head">
+        <span class="tag">${p.event === 'expo2027' ? 'EXPO/FES 2027' : '百花繚乱'}</span>
         <span class="tag tk-kind ${esc(p.kind)}">${esc(KIND[p.kind] || p.kind)}</span>
         <span class="tag ${p.hidden ? 'danger' : 'warn'}">${p.hidden ? '已隱藏' : '顯示中'}</span>
         <span class="tag danger">${p.report_count} 筆檢舉</span>
