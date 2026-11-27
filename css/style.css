@@ -745,3 +745,5 @@ dialog.dlg textarea {
 }
 dialog.dlg .field { margin: 10px 0; }
 dialog.dlg .field select { width: 100%; padding: 10px 14px; border-radius: 12px; }
+
+.field-hint { display: block; margin-top: 4px; font-size: .8rem; color: var(--ink-soft); font-weight: 400; }
