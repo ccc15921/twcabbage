@@ -22,7 +22,7 @@
 
   const I18N = {
     'zh-Hant': {
-      'doc.title': '票務交流區｜ミオファ的高麗菜園', 'nav.ayafu': '百花繚乱 演唱會', 'nav.expo': 'EXPO/FES 2027',
+      'doc.title': '票務交流區｜ミオファ的高麗菜園', 'nav.ayafu': '百花繚乱あやふぶみ', 'nav.expo': 'EXPO/FES 2027',
       'doc.desc': '百花繚乱あやふぶみ 演唱會，台灣Holo粉絲的票務交流區。非官方粉絲製作。',
       brand: 'ミオファ的高麗菜園', 'nav.ledger': '繳稅紀錄簿', 'nav.tickets': '票務交流區',
       title: '票務交流區',
@@ -68,7 +68,7 @@
       'footer.tk': '票務交流為使用者自行聯繫，本站不經手交易，不保證票券真偽，也不協助處理任何交易糾紛，請自行解決。請小心詐騙，建議面交，或是交換其他聯絡方式，確保聯絡得到人。',
     },
     ja: {
-      'doc.title': 'チケット交流所｜ミオファ的高麗菜園', 'nav.ayafu': '百花繚乱 ライブ', 'nav.expo': 'EXPO/FES 2027',
+      'doc.title': 'チケット交流所｜ミオファ的高麗菜園', 'nav.ayafu': '百花繚乱あやふぶみ', 'nav.expo': 'EXPO/FES 2027',
       'doc.desc': '百花繚乱あやふぶみ ライブ、台湾HoloFanのチケット交流所。非公式ファンサイトです。',
       brand: 'ミオファ的高麗菜園', 'nav.ledger': '納税記録簿', 'nav.tickets': 'チケット交流所',
       title: 'チケット交流所',
